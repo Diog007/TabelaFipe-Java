@@ -34,14 +34,27 @@ public class Principal {
 
         System.out.println("Informe o codigo da marca para consulta: ");
         var codigoMarca = leitura.nextLine();
-        endereco = endereco +"/"+codigoMarca+"/modelos";
-        var modeloCarros = consumo.obterDados(endereco);
-        var modelosCarros = conversor.obterDados(modeloCarros, Modelos.class);
-        System.out.println(modelosCarros);
-        modelosCarros.modelos().stream()
+        var endereco1 = endereco +"/"+codigoMarca+"/modelos";
+        var marcaVeiculo = consumo.obterDados(endereco1);
+        var marcasVeiculos = conversor.obterDados(marcaVeiculo, Modelos.class);
+        System.out.println(marcasVeiculos);
+        marcasVeiculos.modelos().stream()
                 .sorted(Comparator.comparing(MarcasCarros::codigo))
                 .forEach(System.out::println);
 
-    }
+        System.out.println("Digite o codigo do modelo para consultar valores: ");
+        var codigoModelo = leitura.nextLine();
+        var enderecoRef = endereco1;
+        endereco1 = enderecoRef + "/" + codigoModelo + "/anos";
+        var modelos = consumo.obterDados(endereco1);
+        var modelosVeiculos =conversor.obterLista(modelos, MarcasCarros.class);
+        modelosVeiculos.forEach(m -> System.out.println("Cod: " + m.codigo() + " Descrição: " + m.nome()));
+        System.out.println(modelosVeiculos);
 
+
+
+        }
+
+
+    }
 }
