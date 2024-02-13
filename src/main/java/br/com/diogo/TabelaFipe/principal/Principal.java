@@ -12,7 +12,6 @@ public class Principal {
     private Scanner leitura = new Scanner(System.in);
     private ConsumoApi consumo = new ConsumoApi();
     private ConverterDados conversor = new ConverterDados();
-
     private final String ENDERECO = "https://parallelum.com.br/fipe/api/v1/";
     private final String MARCA = "/marcas";
     public void exibeMenu(){
@@ -20,8 +19,11 @@ public class Principal {
         System.out.println("Digite uma das opcoes para consultar valores:");
         String marcaDoCarro = leitura.nextLine();
         String endereco = marcaDoCarro;
-        var json = consumo.obterDados("https://parallelum.com.br/fipe/api/v1/" + marcaDoCarro + MARCA);
+        var json = consumo.obterDados(ENDERECO + marcaDoCarro + MARCA);
         System.out.println(json);
+        List<MarcasCarros> marcasCarros = conversor.obterLista(json, MarcasCarros.class);
 
+        marcasCarros.forEach(System.out::println);
     }
+
 }
