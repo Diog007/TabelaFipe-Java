@@ -1,5 +1,6 @@
 package br.com.diogo.TabelaFipe.principal;
 
+import br.com.diogo.TabelaFipe.model.DadosVeiculos;
 import br.com.diogo.TabelaFipe.model.MarcasCarros;
 import br.com.diogo.TabelaFipe.model.Modelos;
 import br.com.diogo.TabelaFipe.services.ConsumoApi;
@@ -58,19 +59,21 @@ public class Principal {
 
         System.out.println("Digite o codigo do modelo para consultar valores: ");
         var codigoModelo = leitura.nextLine();
-        var enderecoRef = endereco1;
 
-        endereco1 = enderecoRef + "/" + codigoModelo + "/anos";
+        String test = endereco1;
+        endereco1 = test+"/"+codigoModelo+"/anos";
         var modelos = consumo.obterDados(endereco1);
+        List<MarcasCarros> modelosVeiculos =conversor.obterLista(modelos, MarcasCarros.class);
+        List<DadosVeiculos> veiculos = new ArrayList<>();
 
-        var modelosVeiculos =conversor.obterLista(modelos, MarcasCarros.class);
-        modelosVeiculos.forEach(m -> System.out.println("Cod: " + m.codigo() + " Descrição: " + m.nome()));
-        System.out.println(modelosVeiculos);
-
-
-
+        for (int i = 0; i < modelosVeiculos.size(); i++) {
+            var enderecoAnos = endereco1 + "/" + modelosVeiculos.get(i).codigo();
+            modelos = consumo.obterDados(enderecoAnos);
+            DadosVeiculos veiculo = conversor.obterDados(modelos, DadosVeiculos.class);
+            veiculos.add(veiculo);
         }
-
-
+        System.out.println("\nTodos os veículo filtrados com avaliações por ano: ");
+        veiculos.forEach(System.out::println);
+        }
     }
 
