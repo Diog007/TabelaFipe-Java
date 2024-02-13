@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
     private Scanner leitura = new Scanner(System.in);
@@ -37,16 +38,31 @@ public class Principal {
         var endereco1 = endereco +"/"+codigoMarca+"/modelos";
         var marcaVeiculo = consumo.obterDados(endereco1);
         var marcasVeiculos = conversor.obterDados(marcaVeiculo, Modelos.class);
+
         System.out.println(marcasVeiculos);
         marcasVeiculos.modelos().stream()
                 .sorted(Comparator.comparing(MarcasCarros::codigo))
                 .forEach(System.out::println);
 
+
+        System.out.println("Digite um trecho do nome do carro a ser buscado: ");
+        var nomeDoVeicul = leitura.nextLine();
+
+        List<MarcasCarros> modelosFiltrados = marcasVeiculos.modelos().stream()
+                        .filter(m -> m.nome().toLowerCase().contains(nomeDoVeicul.toLowerCase()))
+                                .collect(Collectors.toList());
+
+        System.out.println("Modelos Filtrados: ");
+        modelosFiltrados.forEach(System.out::println);
+
+
         System.out.println("Digite o codigo do modelo para consultar valores: ");
         var codigoModelo = leitura.nextLine();
         var enderecoRef = endereco1;
+
         endereco1 = enderecoRef + "/" + codigoModelo + "/anos";
         var modelos = consumo.obterDados(endereco1);
+
         var modelosVeiculos =conversor.obterLista(modelos, MarcasCarros.class);
         modelosVeiculos.forEach(m -> System.out.println("Cod: " + m.codigo() + " Descrição: " + m.nome()));
         System.out.println(modelosVeiculos);
@@ -57,4 +73,4 @@ public class Principal {
 
 
     }
-}
+
